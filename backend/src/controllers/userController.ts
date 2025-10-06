@@ -1,17 +1,28 @@
 import { Request, Response, NextFunction } from 'express';
+import { pool } from '../config/database/connection';
 
 export const userController = {
   // Get user profile
   getProfile: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      // TODO: Implement database query to get user profile
+      const current = (req.user as any);
+      let name = current?.name || '';
+      let provider = current?.provider || '';
+      // If name is not present, attempt to load from DB using email
+      if ((!name || !provider) && current?.email) {
+        const result = await pool.query('SELECT name, provider FROM users WHERE email = $1 LIMIT 1', [current.email]);
+        if (result.rows[0]) {
+          name = result.rows[0].name;
+          provider = result.rows[0].provider;
+        }
+      }
       res.json({
         success: true,
         user: {
-          id: (req.user as any)?.id,
-          email: (req.user as any)?.email,
-          name: (req.user as any)?.name,
-          provider: (req.user as any)?.provider
+          id: current?.id,
+          email: current?.email,
+          name,
+          provider
         }
       });
     } catch (error) {

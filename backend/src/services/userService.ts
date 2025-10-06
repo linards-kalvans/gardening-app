@@ -94,6 +94,10 @@ export class UserService {
       return null;
     }
 
+    // Reject clearly invalid UUIDs to avoid postgres errors during tests
+    if (!/^[0-9a-fA-F-]{10,}$/.test(userId)) {
+      return null;
+    }
     values.push(userId);
     const query = `
       UPDATE users 

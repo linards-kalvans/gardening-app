@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { authController } from '../controllers/authController';
+import { authenticateToken } from '../middleware/auth';
 
 const router = Router();
 
@@ -14,7 +15,7 @@ router.get('/facebook/callback', authController.facebookCallback);
 // Logout route
 router.post('/logout', authController.logout);
 
-// Get current user
-router.get('/me', authController.getCurrentUser);
+// Get current user (protected)
+router.get('/me', authenticateToken, authController.getCurrentUser);
 
 export default router;

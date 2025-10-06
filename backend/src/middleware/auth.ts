@@ -4,7 +4,9 @@ import { JWTPayload } from '../types';
 
 export const authenticateToken = (req: Request, res: Response, next: NextFunction): void => {
   const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
+  const token = typeof authHeader === 'string'
+    ? (authHeader.startsWith('Bearer ') ? authHeader.split(' ')[1] : authHeader)
+    : undefined;
 
   if (!token) {
     res.status(401).json({

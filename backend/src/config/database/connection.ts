@@ -1,9 +1,14 @@
 import { Pool, PoolConfig } from 'pg';
 
+const isTest = process.env.NODE_ENV === 'test';
+const dbName = isTest
+  ? (process.env.DB_NAME_TEST || 'gardening_app_test')
+  : (process.env.DB_NAME || 'gardening_app');
+
 const dbConfig: PoolConfig = {
   host: process.env.DB_HOST || 'localhost',
   port: parseInt(process.env.DB_PORT || '5432'),
-  database: process.env.DB_NAME || 'gardening_app',
+  database: dbName,
   user: process.env.DB_USER || 'postgres',
   password: process.env.DB_PASSWORD || 'password',
   max: 20, // Maximum number of clients in the pool
