@@ -39,8 +39,10 @@ describe('authenticateToken Middleware', () => {
       authenticateToken(req, res, next);
 
       expect(req.user).toBeDefined();
-      expect(req.user?.id).toBe('user123');
-      expect(req.user?.email).toBe('test@example.com');
+      // Cast for test convenience because Express.User is augmented
+      const user = req.user as Express.User | undefined;
+      expect(user?.id).toBe('user123');
+      expect(user?.email).toBe('test@example.com');
       expect(next).toHaveBeenCalled();
       expect(res.status).not.toHaveBeenCalled();
     });
