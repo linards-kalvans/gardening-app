@@ -1,0 +1,53 @@
+# Gardening App - Environment Configuration Template
+# Copy this file to .env and update with your actual values
+
+# =============================================================================
+# SERVER CONFIGURATION
+# =============================================================================
+NODE_ENV=development
+PORT=3001
+FRONTEND_URL=http://localhost:3000
+
+# =============================================================================
+# DATABASE CONFIGURATION
+# =============================================================================
+# For Docker development (use these values)
+DB_HOST=postgres
+DB_PORT=5432
+DB_NAME=gardening_app_dev
+DB_USER=postgres
+DB_PASSWORD=password
+
+# For local development (uncomment and use these instead)
+# DB_HOST=localhost
+# DB_PORT=5432
+# DB_NAME=gardening_app_dev
+# DB_USER=postgres
+# DB_PASSWORD=password
+
+# =============================================================================
+# SECURITY CONFIGURATION
+# =============================================================================
+# Generate strong secrets for production!
+JWT_SECRET=your-super-secret-jwt-key-change-in-production
+SESSION_SECRET=your-super-secret-session-key-change-in-production
+
+# =============================================================================
+# OAUTH CONFIGURATION
+# =============================================================================
+# Google OAuth - Get these from Google Cloud Console
+GOOGLE_CLIENT_ID=your-google-client-id-here
+GOOGLE_CLIENT_SECRET=your-google-client-secret-here
+
+# Facebook OAuth - Get these from Facebook Developers
+FACEBOOK_APP_ID=your-facebook-app-id-here
+FACEBOOK_APP_SECRET=your-facebook-app-secret-here
+
+# =============================================================================
+# OPTIONAL CONFIGURATION
+# =============================================================================
+# Redis Configuration (for session storage in production)
+# REDIS_URL=redis://localhost:6379
+
+# Logging Level
+LOG_LEVEL=info

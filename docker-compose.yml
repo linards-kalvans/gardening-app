@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: gardening_app_postgres
+    environment:
+      POSTGRES_DB: gardening_app
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/database/init:/docker-entrypoint-initdb.d
+    networks:
+      - gardening_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    container_name: gardening_app_backend
+    env_file:
+      - .env
+    environment:
+      # Override specific values for production
+      DB_HOST: postgres
+      DB_NAME: gardening_app
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - gardening_network
+    restart: unless-stopped
+
+  # Frontend React App (placeholder for now)
+  frontend:
+    image: node:18-alpine
+    container_name: gardening_app_frontend
+    working_dir: /app
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_API_URL=http://localhost:3001
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: sh -c "npm install && npm start"
+    depends_on:
+      - backend
+    networks:
+      - gardening_network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  gardening_network:
+    driver: bridge
