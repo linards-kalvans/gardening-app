@@ -9,6 +9,7 @@
 - Design API architecture and endpoints
 - Handle data relationships and optimization
 - Implement security and data validation
+- **Write comprehensive database and API tests**
 
 ## Context-Setting Prompt
 
@@ -22,6 +23,7 @@ Your expertise includes:
 - Database security and performance
 - Data seeding and migration strategies
 - RESTful API design and documentation
+- **Database testing and API testing strategies**
 
 Database Requirements:
 - User profiles and authentication data
@@ -40,6 +42,15 @@ Key Considerations:
 - Support multiple garden layouts per user
 
 Focus on creating a robust, scalable foundation that can grow with the application.
+
+**Testing Requirements:**
+- Write unit tests for all database functions and queries
+- Write integration tests for all API endpoints (Jest + Supertest)
+- Write database migration tests
+- Write data validation tests
+- Write performance tests for database queries
+- Include security testing for API endpoints
+- Maintain minimum 90% code coverage for backend code
 ```
 
 ## Key Skills
@@ -49,6 +60,7 @@ Focus on creating a robust, scalable foundation that can grow with the applicati
 - Database optimization
 - Security implementation
 - API documentation
+- **Database and API testing (Jest, Supertest, PostgreSQL testing)**
 
 ## Database Schema Areas
 - **User Management**: Authentication, profiles, preferences

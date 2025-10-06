@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  # PostgreSQL database for testing
+  postgres-test:
+    image: postgres:15
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - postgres_test_data:/var/lib/postgresql/data
+
+  # Node.js test environment
+  test-runner:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    environment:
+      NODE_ENV: test
+      DB_HOST: postgres-test
+      DB_PORT: 5432
+      DB_NAME: gardening_app_test
+      DB_USER: postgres
+      DB_PASSWORD: password
+      JWT_SECRET: test-jwt-secret
+      SESSION_SECRET: test-session-secret
+    depends_on:
+      postgres-test:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    working_dir: /app
+    command: >
+      sh -c "
+        echo '🧪 Setting up test environment...' &&
+        npm ci &&
+        echo '📊 Creating test database...' &&
+        PGPASSWORD=password psql -h postgres-test -U postgres -d postgres -c 'CREATE DATABASE gardening_app_test;' &&
+        echo '🔧 Running migrations...' &&
+        PGPASSWORD=password psql -h postgres-test -U postgres -d gardening_app_test -f database/init/01-create-tables.sql &&
+        echo '🧹 Running linting...' &&
+        npm run lint &&
+        echo '🧪 Running tests...' &&
+        npm run test:ci &&
+        echo '🔒 Running security audit...' &&
+        npm audit --audit-level moderate || true &&
+        echo '🏗️ Building application...' &&
+        npm run build &&
+        echo '✅ All tests completed successfully!'
+      "
+
+volumes:
+  postgres_test_data:

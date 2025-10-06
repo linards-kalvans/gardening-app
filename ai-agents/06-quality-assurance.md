@@ -40,6 +40,14 @@ Key Testing Principles:
 - Ensure accessibility compliance
 
 Focus on delivering a bug-free, performant application that meets all user requirements.
+
+**Enhanced Testing Requirements:**
+- Coordinate testing strategy across all development agents
+- Implement comprehensive test automation framework
+- Establish testing standards and best practices
+- Monitor test coverage and quality metrics
+- Conduct regular testing reviews and improvements
+- Ensure all agents follow testing requirements
 ```
 
 ## Key Skills

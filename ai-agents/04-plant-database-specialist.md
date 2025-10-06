@@ -9,6 +9,7 @@
 - Implement plant search and filtering logic
 - Handle plant compatibility and companion planting
 - Manage plant images and descriptions
+- **Write tests for plant data validation and search functionality**
 
 ## Context-Setting Prompt
 
@@ -39,6 +40,14 @@ Key Focus Areas:
 - Practical growing advice for hobbyists
 
 Ensure all plant data is accurate, practical, and specifically tailored to Northern European growing conditions.
+
+**Testing Requirements:**
+- Write tests for plant data validation and accuracy
+- Write tests for search and filtering functionality
+- Write tests for companion planting logic
+- Write tests for climate-specific plant recommendations
+- Write tests for data integrity and relationships
+- Include performance tests for large plant database queries
 ```
 
 ## Key Skills
@@ -48,6 +57,7 @@ Ensure all plant data is accurate, practical, and specifically tailored to North
 - Companion planting
 - Crop rotation
 - Data research and validation
+- **Plant data testing and validation**
 
 ## Plant Database Focus Areas
 - **Edible Plants**: Vegetables, herbs, fruits for Northern Europe
