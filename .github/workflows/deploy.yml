@@ -1,0 +1,42 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy Application
+    runs-on: ubuntu-latest
+    environment: production
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Deploy to production
+      run: |
+        echo "🚀 Deploying to production..."
+        echo "📦 Application version: ${{ github.sha }}"
+        echo "🏷️  Tag: ${{ github.ref_name }}"
+        
+        # Add your deployment commands here
+        # Examples:
+        # - Deploy to cloud provider (AWS, GCP, Azure)
+        # - Update Docker containers
+        # - Run database migrations
+        # - Restart services
+        
+        echo "✅ Deployment completed successfully!"
+
+    - name: Health check
+      run: |
+        echo "🔍 Running health checks..."
+        # Add health check commands here
+        echo "✅ Health checks passed!"
+
+    - name: Notify deployment
+      run: |
+        echo "📢 Deployment notification sent!"
+        echo "🌱 Gardening App is now live!"

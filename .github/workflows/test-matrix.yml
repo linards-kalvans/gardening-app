@@ -1,0 +1,76 @@
+name: Test Matrix
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-matrix:
+    name: Test on Node ${{ matrix.node-version }}
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [16, 18, 20]
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: password
+          POSTGRES_USER: postgres
+          POSTGRES_DB: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: backend/package-lock.json
+
+    - name: Install dependencies
+      working-directory: ./backend
+      run: npm ci
+
+    - name: Create test database
+      working-directory: ./backend
+      run: |
+        PGPASSWORD=password psql -h localhost -U postgres -d postgres -c "CREATE DATABASE gardening_app_test;"
+
+    - name: Run database migrations
+      working-directory: ./backend
+      run: |
+        PGPASSWORD=password psql -h localhost -U postgres -d gardening_app_test -f database/init/01-create-tables.sql
+
+    - name: Run tests
+      working-directory: ./backend
+      run: npm run test:ci
+      env:
+        NODE_ENV: test
+        DB_HOST: localhost
+        DB_PORT: 5432
+        DB_NAME: gardening_app_test
+        DB_USER: postgres
+        DB_PASSWORD: password
+        JWT_SECRET: test-jwt-secret
+        SESSION_SECRET: test-session-secret
+
+    - name: Upload coverage for Node ${{ matrix.node-version }}
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./backend/coverage/lcov.info
+        flags: node-${{ matrix.node-version }}
+        name: node-${{ matrix.node-version }}-coverage
