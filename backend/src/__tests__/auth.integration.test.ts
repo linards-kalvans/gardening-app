@@ -29,7 +29,7 @@ describe('Authentication API Integration Tests', () => {
         .expect(401);
 
       expect(response.body).toHaveProperty('success', false);
-      expect(response.body).toHaveProperty('message', 'Not authenticated');
+      expect(response.body).toHaveProperty('message', 'Access token required');
     });
 
     it('should return user info when authenticated', async () => {
