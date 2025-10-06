@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 import session from 'express-session';
 import passport from 'passport';
+import { configurePassport } from './config/auth/passport';
 
 // Import routes
 import authRoutes from './routes/auth';
@@ -54,6 +55,7 @@ app.use(session({
 // Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
+configurePassport(passport);
 
 // Routes
 app.use('/api/auth', authRoutes);

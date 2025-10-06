@@ -66,6 +66,11 @@ export class UserService {
     return result.rows[0] ? mapDbUser(result.rows[0]) : null;
   }
 
+  static async findById(id: string): Promise<User | null> {
+    const result = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
+    return result.rows[0] ? mapDbUser(result.rows[0]) : null;
+  }
+
   // Update user
   static async updateUser(userId: string, updateData: Partial<User>): Promise<User | null> {
     const fields: string[] = [];
