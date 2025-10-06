@@ -13,7 +13,7 @@
     "test:unit": "jest --testPathPattern=__tests__",
     "test:integration": "jest --testPathPattern=__tests__",
     "test:database": "jest --testPathPattern=database.test",
-    "test:ci": "jest --ci --coverage --watchAll=false",
+    "test:ci": "jest --ci --coverage --watchAll=false --runInBand",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
     "format": "prettier --write src/**/*.ts"
